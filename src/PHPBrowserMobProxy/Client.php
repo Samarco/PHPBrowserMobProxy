@@ -110,12 +110,16 @@ class PHPBrowserMobProxy_Client
      * Method for creating a new HAR file
      *
      * @param string $label optional label
+     * @param array $params optional parameters
      *
      * @return string
      */
-    public function newHar($label = '')
+    public function newHar($label = '', $params = array())
     {
         $data = "initialPageRef=" . $label;
+        if (is_array($params) && sizeof($params)) {
+            $data.= "&" . implode("&", $params);
+        }
         $url = "http://{$this->browsermob_url}/proxy/{$this->port}/har";
         $response = Requests::put(
             $url,
